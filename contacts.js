@@ -22,7 +22,8 @@ async function getContactById(contactId) {
   try {
     const contacts = await fs.readFile(contactsPath, 'utf8');
     const parsedContacts = JSON.parse(contacts);
-    const contact = parsedContacts.find(item => item.id === contactId);
+
+    const contact = parsedContacts.find(item => item.id === contactId.toString());
     console.log(contact);
   } catch (error) {
     console.log(error);
@@ -41,9 +42,7 @@ async function removeContact(contactId) {
     if (contactIdx === -1) {
       return null;
     }
-    // console.log(contactIdx);
 
-    // const [removeContact] = parsedContacts.splice(contactIdx, 1);
     const contactsAfterRemove = parsedContacts.filter(
       contact => contact.id !== contactId.toString()
     );
@@ -51,7 +50,7 @@ async function removeContact(contactId) {
     console.log(contactsAfterRemove);
 
     await fs.writeFile(contactsPath, JSON.stringify(contactsAfterRemove), 'utf-8');
-    // return removeContact;
+    return removeContact;
   } catch (error) {
     console.log(error);
   }
@@ -68,18 +67,20 @@ async function addContact(name, email, phone) {
 
     const nextId = Math.max(...parsedContacts.map(contact => parseInt(contact.id))) + 1;
 
-    // const newContact = {
-    //   id: nextId.toString(),
-    //   name,
-    //   email,
-    //   phone,
-    // };
-    // console.log(newContact.name);
-    // if (newContact.name === parsedContacts.name) {
-    //   return null;
-    // }
-    const resultContactsData = [...parsedContacts, { id: nextId.toString(), name, email, phone }];
-    // parsedContacts.push(newContact);
+    const newContact = {
+      id: nextId.toString(),
+      name: name.toString(),
+      email: email.toString(),
+      phone: phone.toString(),
+    };
+
+    console.log(contacts.name);
+    console.log(newContact.name);
+    if (newContact.name === contacts.name) {
+      return null;
+    }
+
+    const resultContactsData = [...parsedContacts, newContact];
     await fs.writeFile(contactsPath, JSON.stringify(resultContactsData), 'utf8');
     console.log(newContact);
     console.log(parsedContacts);

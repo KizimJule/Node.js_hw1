@@ -1,11 +1,14 @@
+const argv = require('yargs').argv;
+
 const { listContacts, getContactById, removeContact, addContact } = require('./contacts');
 
-const invokeActions = async ({ action, id, name, email, phone }) => {
+function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
       listContacts();
       break;
-    case 'getById':
+
+    case 'get':
       getContactById(id);
       break;
 
@@ -16,18 +19,10 @@ const invokeActions = async ({ action, id, name, email, phone }) => {
     case 'remove':
       removeContact(id);
       break;
+
     default:
-      console.log('Unknown action!');
+      console.warn('\x1B[31m Unknown action type!');
   }
-};
+}
 
-invokeActions({ action: 'list' });
-invokeActions({ action: 'getById', id: '4' });
-
-// const newContact = {
-//   name: 'Julia Kizim',
-//   email: 'Kizim@mail.ru',
-//   phone: '0506255408',
-// };
-invokeActions({ action: 'add', name: 'Julia Kizim', email: 'Kizim@mail.ru', phone: '0506255408' });
-// removeContact(12);
+invokeAction(argv);
