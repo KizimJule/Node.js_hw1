@@ -1,6 +1,3 @@
-const { uid } = require('uid');
-const { v4 } = require('uuid');
-
 const fs = require('fs').promises;
 
 const path = require('path');
@@ -74,18 +71,8 @@ async function addContact(name, email, phone) {
       phone: phone.toString(),
     };
 
-    // console.log(contacts.name);
-    // console.log(newContact.name);
-    // if (newContact.name === contacts.name) {
-    //   return null;
-    // }
-
     const resultContactsData = [...parsedContacts, newContact];
-    const newContacts = await fs.writeFile(
-      contactsPath,
-      JSON.stringify(resultContactsData),
-      'utf8'
-    );
+    await fs.writeFile(contactsPath, JSON.stringify(resultContactsData), 'utf8');
     console.log(newContact);
     console.table(resultContactsData);
     return newContact;
